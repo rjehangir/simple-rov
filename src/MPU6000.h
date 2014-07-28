@@ -1,6 +1,7 @@
 #ifndef MPU6000_H
 #define MPU6000_H
 
+#include <WProgram.h>
 #include <stdint.h>
 
 #define MPU6000_CHIP_SELECT_PIN 53  // MPU6000 CHIP SELECT

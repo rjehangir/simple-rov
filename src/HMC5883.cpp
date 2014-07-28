@@ -136,5 +136,3 @@ namespace HMC5883 {
   	delay(30000);
   }
 }
-
-
