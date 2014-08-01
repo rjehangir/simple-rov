@@ -3,16 +3,16 @@ BlueROV
 
 This project contains the embedded and topside code for the BlueROV. The BlueROV has the following hardware:
 
-*APM2.6 Autopilot from 3D Robotics
-*Raspberry Pi with RasPiCam
-*BlueRobotics T100 thrusters
+* APM2.6 Autopilot from 3D Robotics
+* Raspberry Pi with RasPiCam
+* BlueRobotics T100 thrusters
 
 ## Dependencies
 
 This project currently requires:
 
-*MPlayer
-*PyGame
+* MPlayer
+* PyGame
 
 ## Control Interface
 
