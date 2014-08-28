@@ -10,7 +10,7 @@ namespace Data {
 		int16_t pilotYaw;
 		int16_t pilotForward;
 		int16_t pilotStrafe;
-		int16_t pilotUp;
+		int16_t pilotVertical;
 	};
 
 	struct sendStruct {

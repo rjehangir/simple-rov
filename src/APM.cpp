@@ -81,6 +81,11 @@ namespace APM {
 		{
 			case 0:  OCR1B=pwm; break;  //ch1
 			case 1:  OCR1A=pwm; break;  //ch2
+			case 2:  break;
+			case 3:  break;
+			case 4:  break;
+			case 5:  break;
+			case 6:  break;
 		} 
 	}
 	
