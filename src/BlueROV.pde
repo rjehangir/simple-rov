@@ -3,11 +3,16 @@
 #include "HMC5883.h"
 #include "DCM.h"
 #include "APM.h"
+#include "Communication.h"
 
 float dt;
 long timer;
 long outputTimer;
 long diagnosticTimer;
+
+Communication::receiveStruct rxData;
+Communication::sendStruct    txData;
+
 
 void setup() {
   Serial.begin(57600);
@@ -47,7 +52,7 @@ void updateNavigationSensors() {
 			      MPU6000::accelZ,
 			      dt);
     DCM::normalize();
-    DCM::driftCorrection(HMC5883::heading);
+    //DCM::driftCorrection(HMC5883::heading);
     DCM::accelerationCorrection();
     DCM::convertDCMtoEuler();
     
@@ -84,10 +89,9 @@ void loop() {
 		controlTimer = millis();
 
   	updateNavigationSensors();
-
   }	
   
-  if (false && millis()-printTimer > printPeriod) {
+  if (true && millis()-printTimer > printPeriod) {
   	printTimer = millis();
 		Serial.write(27);       // ESC command
 		Serial.print("[2J");    // clear screen command
@@ -95,8 +99,9 @@ void loop() {
 		Serial.print("[H");     // cursor to home command
 		Serial.println("BlueROV Live Data");
 		Serial.println("=====================");
-		Serial.print("Roll: ");Serial.print(degrees(DCM::roll));Serial.println(" deg ");
-		Serial.print("Pitch: ");Serial.print(degrees(DCM::pitch));Serial.println(" deg");				
+		Serial.print("Roll:       ");Serial.print(degrees(DCM::roll));Serial.println(" deg ");
+		Serial.print("Pitch:      ");Serial.print(degrees(DCM::pitch));Serial.println(" deg");				
+		Serial.print("Yaw:        ");Serial.print(degrees(DCM::yaw));Serial.println(" deg");				
   	Serial.println("");  	
   }
 }
