@@ -1,10 +1,9 @@
-#ifndef COMMUNICATION_H90278
-#define COMMUNICATION_H90278
+#ifndef DATA_H90278
+#define DATA_H90278
 
 #include <WProgram.h>
-#include "Transfer.h"
 
-namespace Communication {
+namespace Data {
 	struct receiveStruct {
 		int16_t pilotRoll;
 		int16_t pilotPitch;
@@ -20,9 +19,10 @@ namespace Communication {
 		int16_t millicurrent;
 	};
 
-	void init(Stream* _stream);
+	extern receiveStruct in;
+	extern sendStruct    out;
 
-	void receive();
-
-	void send();
+	void update();
 }
+
+#endif

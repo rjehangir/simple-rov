@@ -3,20 +3,21 @@
 #include "HMC5883.h"
 #include "DCM.h"
 #include "APM.h"
-#include "Communication.h"
+#include "Transfer.h"
+#include "Data.h"
 
 float dt;
 long timer;
 long outputTimer;
 long diagnosticTimer;
 
-Communication::receiveStruct rxData;
-Communication::sendStruct    txData;
-
+Transfer transfer;
 
 void setup() {
   Serial.begin(57600);
   Serial.println("start");
+
+  transfer.setStream(&Serial);
 
   // Set barometer CS pin high so it doesn't hog the bus. How frustrating.  
   pinMode(40,OUTPUT);
@@ -81,9 +82,29 @@ void updateNavigationSensors() {
 void loop() {
 	static const long printPeriod			=			500;
   static const long controlPeriod   =     20; // 50 Hz
+  static const long transferReceivePeriod   =    50; // 20 Hz
+  static const long transferSendPeriod   =    250; // 4 Hz
 
 	static long printTimer;
 	static long controlTimer;
+	static long transferReceiveTimer;
+	static long transferSendTimer;
+
+	if (millis()-transferReceiveTimer>transferReceivePeriod) {
+		transferReceiveTimer = millis();
+
+		Data::update();
+
+		transfer.receive(&Data::in);
+	}
+
+	if (millis()-transferSendTimer>transferSendPeriod) {
+		transferSendTimer = millis();
+
+		Data::update();
+
+		transfer.send(&Data::out);
+	}
 
 	if (millis()-controlTimer>controlPeriod) {
 		controlTimer = millis();
@@ -91,7 +112,7 @@ void loop() {
   	updateNavigationSensors();
   }	
   
-  if (true && millis()-printTimer > printPeriod) {
+  if (false && millis()-printTimer > printPeriod) {
   	printTimer = millis();
 		Serial.write(27);       // ESC command
 		Serial.print("[2J");    // clear screen command

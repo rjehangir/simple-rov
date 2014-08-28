@@ -31,10 +31,11 @@ cmake_minimum_required (VERSION 2.6)
 project (BlueROV)
 set(arduino_libs EEPROM SPI Wire Wire/utility)
 set(sources APM.cpp
-						Communication.cpp
+						Data.cpp
 	    			DCM.cpp
 	    			HMC5883.cpp
 	    			MPU6000.cpp
+	    			Transfer.cpp
 	    			)
 
 ###############################################################################
