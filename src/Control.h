@@ -5,6 +5,8 @@
 #include "Data.h"
 
 namespace Control {
+	extern int16_t thruster[];
+
 	void calculate();
 
 	void execute();

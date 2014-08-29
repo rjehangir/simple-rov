@@ -4,10 +4,11 @@
 namespace {
 	float controlRoll, controlPitch, controlYaw;
 	float controlForward, controlStrafe, controlVertical;
-	int16_t thruster[6];
 }
 
 namespace Control {
+	int16_t thruster[6];
+	
 	void calculate() {
 		controlRoll     = Data::in.pilotRoll;
 		controlPitch    = Data::in.pilotPitch;
@@ -23,7 +24,7 @@ namespace Control {
 		thruster[1] = base - controlRoll - 0.5*controlStrafe + 0.5*controlPitch + 0.5*controlVertical; // Front right vertical
 		thruster[2] = base + controlYaw + controlForward; // Left forward
 		thruster[3] = base - controlYaw + controlForward; // Right forward
-		thruster[4] = base + controlPitch + controlVertical; // Back vertical
+		thruster[4] = base - controlPitch + controlVertical; // Back vertical
 		thruster[5] = base + controlStrafe; // Bottom lateral
 
 		for ( uint8_t i = 0 ; i < 6 ; i++ ) {

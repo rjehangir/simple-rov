@@ -5,6 +5,7 @@
 #include "APM.h"
 #include "Transfer.h"
 #include "Data.h"
+#include "Control.h"
 
 float dt;
 long timer;
@@ -93,8 +94,6 @@ void loop() {
 	if (millis()-transferReceiveTimer>transferReceivePeriod) {
 		transferReceiveTimer = millis();
 
-		Data::update();
-
 		transfer.receive(&Data::in);
 	}
 
@@ -110,6 +109,9 @@ void loop() {
 		controlTimer = millis();
 
   	updateNavigationSensors();
+
+  	Control::calculate();
+  	Control::execute();
   }	
   
   if (false && millis()-printTimer > printPeriod) {
