@@ -52,6 +52,32 @@ namespace APM {
     OCR1A = 0xFFFF; // Ch 2, Init OCR registers to nil output signal
     OCR1B = 0xFFFF; // Ch 1
 
+    // --------------- TIMER4: CH_3, CH_4, and CH_5 ---------------------
+		pinMode(8,OUTPUT); // CH_3 (PH5/OC4C)
+		pinMode(7,OUTPUT); // CH_4 (PH4/OC4B)
+		pinMode(6,OUTPUT); // CH_5 (PH3/OC4A)
+		// WGM: 1 1 1 0. Clear Timer on Compare, TOP is ICR4.
+		// CS41: prescale by 8 => 0.5us tick
+		TCCR4A =((1<<WGM41)|(1<<COM4C1)|(1<<COM4B1)|(COM4A1));
+		TCCR4B = (1<<WGM43)|(1<<WGM42)|(1<<CS41);
+		ICR4 = 40000; // 0.5us tick => 50hz freq
+		OCR4A = 0xFFFF; // Init OCR registers to nil output signal
+		OCR4B = 0xFFFF;
+		OCR4C = 0xFFFF;
+
+		//--------------- TIMER3: CH_6, CH_7, and CH_8 ----------------------
+		pinMode(3,OUTPUT); // CH_6 (PE5/OC3C)
+		pinMode(2,OUTPUT); // CH_7 (PE4/OC3B)
+		pinMode(5,OUTPUT); // CH_8 (PE3/OC3A)
+		// WGM: 1 1 1 0. Clear timer on Compare, TOP is ICR3
+		// CS31: prescale by 8 => 0.5us tick
+		TCCR3A =((1<<WGM31)|(1<<COM3B1)|(1<<COM3C1)|(1<<COM3A1));
+		TCCR3B = (1<<WGM33)|(1<<WGM32)|(1<<CS31);
+		ICR3 = 40000; // 0.5us tick => 50hz freq
+		OCR3A = 0xFFFF; // Init OCR registers to nil output signal
+		OCR3B = 0xFFFF;
+		OCR3C = 0xFFFF;
+
     cli();
 		
 		// Set up PPM capture and Ch 10, 11
@@ -81,11 +107,12 @@ namespace APM {
 		{
 			case 0:  OCR1B=pwm; break;  //ch1
 			case 1:  OCR1A=pwm; break;  //ch2
-			case 2:  break;
-			case 3:  break;
-			case 4:  break;
-			case 5:  break;
-			case 6:  break;
+			case 2:  OCR4C=pwm; break;
+			case 3:  OCR4B=pwm; break;
+			case 4:  OCR4A=pwm; break;
+			case 5:  OCR3C=pwm; break;
+			case 6:  OCR3B=pwm; break;
+			case 7:  OCR3A=pwm; break;
 		} 
 	}
 	
