@@ -121,6 +121,12 @@ namespace APM {
 		{
 			case 0:  return OCR1B/2;  //ch1
 			case 1:  return OCR1A/2;  //ch2
+			case 2:  return OCR4C/2;
+			case 3:  return OCR4B/2;
+			case 4:  return OCR4A/2;
+			case 5:  return OCR3C/2;
+			case 6:  return OCR3B/2;
+			case 7:  return OCR3A/2;
 		} 
 		return 0;
 	}
