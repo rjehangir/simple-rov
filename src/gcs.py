@@ -33,7 +33,8 @@ time.sleep(0)
 import socket
 import select
 
-UDP_IP = "127.0.0.1"
+UDP_IP = "0.0.0.0"
+ROV_IP = "192.168.2.2"
 UDP_SEND_PORT = 5005
 UDP_RECV_PORT = 5006
 
@@ -61,6 +62,13 @@ outgoingFormatString = 'hhhhhh'
 
 commandTimer = time.time()
 
+pilotRoll          = 0;
+pilotPitch         = 0;
+pilotYaw           = 0;
+pilotForward       = 0;
+pilotStrafe        = 0;
+pilotVertical      = 0;
+
 while (True):
 	if isJoystick:
 		pygame.event.pump()
@@ -71,12 +79,14 @@ while (True):
 		# 	print "Button %g: %g"%(i,_joystick.get_button(i))
 
 		# Process joystick axes
+		alpha = 0.02
+
 		pilotRoll          = 0;
-		pilotPitch         = _joystick.get_axis(3)*-1*200;
-		pilotYaw           = _joystick.get_axis(2)*200;
-		pilotForward       = _joystick.get_axis(1)*-1*300;
-		pilotStrafe        = _joystick.get_axis(0)*200;
-		pilotVertical      = (_joystick.get_axis(5)+1)/2*300-(_joystick.get_axis(4)+1)/2*300;
+		pilotPitch         = (_joystick.get_axis(3)*-1*175)*alpha + pilotPitch*(1-alpha)
+		pilotYaw           = (_joystick.get_axis(2)*200)*alpha + pilotYaw*(1-alpha)
+		pilotForward       = (_joystick.get_axis(1)*-1*300)*alpha + pilotForward*(1-alpha)
+		pilotStrafe        = (_joystick.get_axis(0)*-1*200)*alpha + pilotStrafe*(1-alpha);
+		pilotVertical      = ((_joystick.get_axis(5)+1)/2*400-(_joystick.get_axis(4)+1)/2*300)*alpha + pilotVertical*(1-alpha)
 	else:
 		pilotRoll          = 0;
 		pilotPitch         = 0;
@@ -103,11 +113,20 @@ while (True):
 		print "Volts: ",values[6]/1000.0
 		print "Amps: ",values[7]/1000.0
 
+	#print "Roll: "+str(pilotRoll)
+	#print "Pitch: "+str(pilotPitch)
+	#print "Yaw: "+str(pilotYaw)
+	#print "Forward: "+str(pilotForward)
+	#print "Strafe: "+str(pilotStrafe)
+	#print "Vertical: "+str(pilotVertical)
+
 	toSend = encodeTransfer(outgoingFormatString,(pilotRoll,pilotPitch,pilotYaw,pilotForward,pilotStrafe,pilotVertical))
 
 
 	if (time.time()-commandTimer > 0.1):
 		commandTimer = time.time()
-		sock.sendto(toSend,(UDP_IP,UDP_SEND_PORT))
+		sock.sendto(toSend,(ROV_IP,UDP_SEND_PORT))
+		#from pprint import pprint
+		#pprint(toSend)
 
 

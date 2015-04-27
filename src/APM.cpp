@@ -58,7 +58,7 @@ namespace APM {
 		pinMode(6,OUTPUT); // CH_5 (PH3/OC4A)
 		// WGM: 1 1 1 0. Clear Timer on Compare, TOP is ICR4.
 		// CS41: prescale by 8 => 0.5us tick
-		TCCR4A =((1<<WGM41)|(1<<COM4C1)|(1<<COM4B1)|(COM4A1));
+		TCCR4A = (1<<WGM41)|(1<<COM4C1)|(1<<COM4B1)|(1<<COM4A1);
 		TCCR4B = (1<<WGM43)|(1<<WGM42)|(1<<CS41);
 		ICR4 = 40000; // 0.5us tick => 50hz freq
 		OCR4A = 0xFFFF; // Init OCR registers to nil output signal
@@ -71,7 +71,7 @@ namespace APM {
 		pinMode(5,OUTPUT); // CH_8 (PE3/OC3A)
 		// WGM: 1 1 1 0. Clear timer on Compare, TOP is ICR3
 		// CS31: prescale by 8 => 0.5us tick
-		TCCR3A =((1<<WGM31)|(1<<COM3B1)|(1<<COM3C1)|(1<<COM3A1));
+		TCCR3A = (1<<WGM31)|(1<<COM3B1)|(1<<COM3C1)|(1<<COM3A1);
 		TCCR3B = (1<<WGM33)|(1<<WGM32)|(1<<CS31);
 		ICR3 = 40000; // 0.5us tick => 50hz freq
 		OCR3A = 0xFFFF; // Init OCR registers to nil output signal
