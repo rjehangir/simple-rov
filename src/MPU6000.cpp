@@ -1,4 +1,4 @@
-#include <SPI.h>
+#include "SPI.h"
 #include "MPU6000.h"
 
 namespace MPU6000 {

@@ -91,13 +91,13 @@ void loop() {
 	static long transferReceiveTimer;
 	static long transferSendTimer;
 
-	if (millis()-transferReceiveTimer>transferReceivePeriod) {
+	if (false && millis()-transferReceiveTimer>transferReceivePeriod) {
 		transferReceiveTimer = millis();
 
 		transfer.receive(&Data::in);
 	}
 
-	if (millis()-transferSendTimer>transferSendPeriod) {
+	if (false && millis()-transferSendTimer>transferSendPeriod) {
 		transferSendTimer = millis();
 
 		Data::update();
@@ -114,7 +114,7 @@ void loop() {
   	Control::execute();
   }	
   
-  if (false && millis()-printTimer > printPeriod) {
+  if (true && millis()-printTimer > printPeriod) {
   	printTimer = millis();
 		Serial.write(27);       // ESC command
 		Serial.print("[2J");    // clear screen command
