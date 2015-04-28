@@ -3,9 +3,6 @@
 #include "HMC5883.h"
 #include "DCM.h"
 #include "APM.h"
-#include "Transfer.h"
-#include "Data.h"
-#include "Control.h"
 #include "ros.h"
 
 float dt;
@@ -13,14 +10,11 @@ long timer;
 long outputTimer;
 long diagnosticTimer;
 
-Transfer transfer;
 ros::NodeHandle  nh;
 
 void setup() {
   Serial.begin(57600);
   Serial.println("start");
-
-  transfer.setStream(&Serial);
 
   // Set barometer CS pin high so it doesn't hog the bus. How frustrating.  
   pinMode(40,OUTPUT);
@@ -37,8 +31,8 @@ void setup() {
 	HMC5883::set_offset(108, 6, 96);
 
   // ROS Setup
-  nh.initNode();
-  while(!nh.connected()) nh.spinOnce();
+  //nh.initNode();
+  //while(!nh.connected()) nh.spinOnce();
 }
 
 void updateNavigationSensors() {
@@ -89,38 +83,21 @@ void updateNavigationSensors() {
 void loop() {
 	static const long printPeriod			=			500;
   static const long controlPeriod   =     20; // 50 Hz
-  static const long transferReceivePeriod   =    50; // 20 Hz
-  static const long transferSendPeriod   =    250; // 4 Hz
 
 	static long printTimer;
 	static long controlTimer;
-	static long transferReceiveTimer;
-	static long transferSendTimer;
-
-	if (false && millis()-transferReceiveTimer>transferReceivePeriod) {
-		transferReceiveTimer = millis();
-
-		transfer.receive(&Data::in);
-	}
-
-	if (false && millis()-transferSendTimer>transferSendPeriod) {
-		transferSendTimer = millis();
-
-		Data::update();
-
-		transfer.send(&Data::out);
-	}
 
 	if (millis()-controlTimer>controlPeriod) {
 		controlTimer = millis();
 
   	updateNavigationSensors();
 
-  	Control::calculate();
-  	Control::execute();
+  	for ( uint8_t i = 0 ; i < 6 ; i++ ) {
+	  APM::outputPWM(i,constrain(1500,1100,1900)); // PUT REAL THRUSTER OUTPUTS IN "1500" SPOT
+	}
   }	
   
-  if (true && millis()-printTimer > printPeriod) {
+  if (false && millis()-printTimer > printPeriod) {
   	printTimer = millis();
 		Serial.write(27);       // ESC command
 		Serial.print("[2J");    // clear screen command
