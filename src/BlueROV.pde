@@ -6,6 +6,7 @@
 #include "Transfer.h"
 #include "Data.h"
 #include "Control.h"
+#include "ros.h"
 
 float dt;
 long timer;
@@ -13,6 +14,7 @@ long outputTimer;
 long diagnosticTimer;
 
 Transfer transfer;
+ros::NodeHandle  nh;
 
 void setup() {
   Serial.begin(57600);
@@ -33,6 +35,10 @@ void setup() {
 	  HMC5883::calibrateOffsets();
 	}
 	HMC5883::set_offset(108, 6, 96);
+
+  // ROS Setup
+  nh.initNode();
+  while(!nh.connected()) nh.spinOnce();
 }
 
 void updateNavigationSensors() {
