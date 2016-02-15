@@ -1,5 +1,5 @@
-BlueROV
-=======
+simple-rov
+==========
 
 This project contains the embedded and topside code for the BlueROV. The BlueROV has the following hardware:
 
